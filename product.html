@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>360 Organic Foodie - Super-Admin Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    
+  </style>
+</head>
+<body>
+   <!-- Desktop Navbar (visible on md and up) -->
+      <nav class="navbar navbar-expand-md bg-white d-none d-md-flex fixed-top">
+        <div class="container-fluid">
+          <img src="./images/Foodies logo without Banner 1.png" style="width: 50px; height: 50px" alt="">
+          <span class="Navlogo1 d-md-none">360 Organic Foodie</span>
+          <div class="collapse navbar-collapse">
+            <ul class="navbar-nav me-auto">
+              <li class="nav-item">
+                <div class="input-group Navborder">
+                  <button class="btn btn-outline-secondary border-0" type="button">
+                    <i class="fas fa-search"></i>
+                  </button>
+                  <input type="text" class="form-control border-0" placeholder="Search here...">
+                </div>
+              </li>
+            </ul>
+            <form class="d-flex">
+              <div class="d-flex align-items-center">
+                <button class="text-reset me-3 btnSharp"><i class="fa-solid fa-cart-shopping"></i></button>
+                <button class="text-reset me-4 btnSharp position-relative" onclick="toggleNotification(event)">
+                  <i class="fas fa-bell"></i>
+                  <span id="notificationBadge"
+                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                        style="font-size: 0.7rem; display:none;">
+                  </span>
+                </button>
+                <img id="userAvatar" class="me-3 rounded-circle" src="./images/cheerful-curly-man-with-bristle-points-left-wears-casual-clothes-spectacles 1.png" alt="User Avatar" width="40" height="40">
+                <span id="userName" class="CustomP-14-400 me-3 text-dark fw-semibold"></span>
+              </div>
+            </form>
+            <!-- notification pop-up  -->
+              <div class="col-md-4" id="notificationPopUp">
+                  <div class="card p-3" style=" overflow-y: auto;">
+                    <h6 class="fw-bold mb-3">See all orders here</h6>
+                    <ul class="list-unstyled" id="activityFeed"></ul>
+                  </div>
+              </div>
+          </div>
+        </div>
+      </nav>
+      <!-- Mobile Navbar (visible only on sm) -->
+      <nav class="navbar bg-white px-3 d-flex justify-content-between align-items-center d-flex d-sm-flex d-md-none">
+        <!-- Left side -->
+        <div class="d-flex align-items-center">
+          <!-- Hamburger -->
+          <button class="btn p-0 me-3" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu">
+            <i class="fa-solid fa-bars fs-4"></i>
+          </button>
+          <!-- Search -->
+           <div class="search-container">
+            <button class="btn p-0" id="mobileSearchBtn" aria-label="Open search">
+              <i class="fa-solid fa-magnifying-glass fs-5 text-muted"></i>
+            </button>
+            <input
+              type="text"
+              id="mobileSearchInput"
+              class="mobile-search-input"
+              placeholder="Search dashboard..."
+              aria-label="Search dashboard"
+            />
+          </div>
+          <!-- <div class="search-container position-relative">
+            <button class="btn p-0" id="mobileSearchBtn">
+              <i class="fa-solid fa-magnifying-glass fs-5 text-muted"></i>
+            </button>
+            <input type="text" id="mobileSearchInput" class="form-control form-control-sm position-absolute"
+              placeholder="Search..."
+              style="width: 0; opacity: 0; transition: all 0.3s ease; left: 40px; top: 0; z-index: 1000;">
+          </div> -->
+        </div>
+        <!-- Right side -->
+        <div class="d-flex align-items-center">
+          <!-- Bell -->
+          <button class="text-reset me-1 btnSharp position-relative" onclick="toggleNotification(event)">
+                  <i class="fas fa-bell"></i>
+                  <span id="notificationBadge1"
+                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                        style="font-size: 0.7rem; display:none;">
+                  </span>
+                </button>
+          <!-- Profile -->
+          <img src="./images/cheerful-curly-man-with-bristle-points-left-wears-casual-clothes-spectacles 1.png"
+              class="rounded-circle"
+              alt="Profile" width="40" height="40">
+        </div>
+              <div class="col-md-4" id="notificationPopUp1">
+                  <div class="card p-3" style=" overflow-y: auto;">
+                    <h6 class="fw-bold mb-3">Recent Activities in Your City</h6>
+                    <ul class="list-unstyled" id="activityFeed1"></ul>
+                  </div>
+              </div>
+      </nav>
+
+
+
+      <!-- Sidebar (offcanvas for mobile) -->
+      <div class="offcanvas offcanvas-start sidebar" tabindex="-1" id="sidebarMenu">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title">Menu</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body p-3">
+          <ul class="listItem">
+            <li><a href="dashboard.html" class="active" style="text-decoration: none; color: #8D98AF; "><i class="fa-solid fa-house me-3"></i>Dashboard</a></li>
+            <li><a href="orders.html" style="text-decoration: none; color: #8D98AF; "><i class="fa-solid fa-cart-shopping me-3"></i>Orders</a></li>
+            <li><a href="product.html" style="text-decoration: none; color: #8D98AF; "><i class="fa-solid fa-user me-3"></i>Products</a></li>
+            <li><a href="categories.html" style="text-decoration: none; color: #8D98AF; "><i class="fa-solid fa-warehouse me-3"></i>categories</a></li>
+            <li><a href="users.html" style="text-decoration: none; color: #8D98AF; "><i class="fa-solid fa-bell me-3"></i>Customers</a></li>
+            <hr>
+            <li><a href="#" style="text-decoration: none; color: #8D98AF; "><i class="fa-solid fa-message me-3"></i>Reviews</a></li>
+            <li><a href="#" style="text-decoration: none; color: #8D98AF; "><i class="fa-solid fa-gear me-3"></i>Settings</a></li>
+            <li><a onclick="logOut()" style="cursor:pointer; text-decoration: none; color: #8D98AF"><i class="fa-solid fa-arrow-right-from-bracket me-3"></i>Logout</a></li>
+          </ul>
+        </div>
+      </div>
+
+
+<div class="container-fluid ">
+  <div class="row">
+    <!-- Sidebar -->
+          <div class="col-md-2 sidebar d-md-block d-none">
+          <ul class="listItem">
+            <li>
+              <a href="dashboard.html" class="nav-link">
+                <i class="fa-solid fa-house me-lg-3 me-md-1"></i>
+                <span>Dashboard</span>
+              </a>
+            </li>
+            <li>
+              <a href="orders.html" class="nav-link">
+                <i class="fa-solid fa-cart-shopping me-lg-3 me-md-1"></i>
+                <span>Orders</span>
+              </a>
+            </li>
+            <li>
+              <a href="product.html" class="nav-link">
+                <i class="fa-solid fa-user me-lg-3 me-md-1"></i>
+                <span>Products</span>
+              </a>
+            </li>
+            <li>
+              <a href="categories.html" class="nav-link">
+                <i class="fa-solid fa-warehouse me-lg-3 me-md-1"></i>
+                <span>Category</span>
+              </a>
+            </li>
+            <li>
+              <a href="users.html" class="nav-link">
+                <i class="fa-solid fa-bell me-lg-3 me-md-1"></i>
+                <span>Customers</span>
+              </a>
+            </li>
+            <hr>
+            <li>
+              <a href="#" class="nav-link">
+                <i class="fa-solid fa-message me-lg-3 me-md-1"></i>
+                <span>Reviews</span>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="nav-link">
+                <i class="fa-solid fa-gear me-lg-3 me-md-1"></i>
+                <span>Settings</span>
+              </a>
+            </li>
+            <li class="mt-5">
+              <a href="#" class="nav-link  Dashbutton" onclick="logOut()">
+                <i class="fa-solid fa-arrow-right-from-bracket me-lg-3 me-md-1"></i>
+                <span>Logout</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+    <!-- Main Content -->
+     
+    <div class="col-md-10 p-4 shadow">
+        <div class="d-flex align-items-center justify-content-between mt-lg-5">
+            <h3>Products</h3>
+            <div class="div">
+    
+                <button class="btn btn-success" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">+ Add Product</button>
+                <!-- modal to add products ends here -->
+            </div>
+        </div>
+
+        <div class="d-flex align-items-center justify-content-between mt-3 ">
+            <div class=" d-flex align-items-center search-fill">
+                <select class="form-select selectINPUT" aria-label="Default select example">
+                    <option selected>Filter</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                </select>   
+                
+                <div class="search-container ms-lg-3">
+                    <i class="fa fa-search search-icon"></i>
+                    <input type="text" id="searchInput" placeholder="Search..." />
+                </div>
+            </div>   
+        </div>
+
+        <!-- product table section here  -->
+       <!-- <div class="table-responsive mt-3">
+       <table class="table DStable1 align-middle">
+        <thead>
+            <tr>
+                <th>
+                    <input type="checkbox" >
+                    <span class="ms-2">Product</span>
+                </th>
+                <th>Inventory</th>
+                <th>Color</th>
+                <th>Price</th>
+                <th>Rating</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <input type="checkbox" class="me-2">
+                    <img src="./images/Bitmap.png" alt="">
+                    <span class="ms-2">Berry Bliss Bites Snacks</span>
+                    
+                </td>
+                <td>96 in stock</td>
+                <td>Black</td>
+                <td>$49.90</td>
+                <td>5.0 (32 Votes)</td>
+            </tr>
+        </tbody>
+       </table>
+       </div> -->
+       <!-- product table section here  -->
+
+<div class=" mt-5">
+  <h2 class="mb-4 text-center">Super Admin - Product Management</h2>
+  <!-- Search & Page Size -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <input type="text" id="searchInput" class="form-control w-50" placeholder="Search products...">
+    <select id="pageSize" class="form-select w-auto ms-2">
+      <option value="5">5 per page</option>
+      <option value="10" selected>10 per page</option>
+      <option value="20">20 per page</option>
+      <option value="50">50 per page</option>
+    </select>
+  </div>
+  <!-- Spinner -->
+  <div id="loadingSpinner" class="text-center my-3" style="display:none;">
+    <div class="spinner-border text-primary" role="status"></div>
+    <p>Loading products...</p>
+  </div>
+  <!-- Table -->
+  <div class="table-responsive">
+    <table class="table table-striped table-hover align-middle">
+      <thead class="table-dark">
+        <tr>
+          <th>Name</th>
+          <th>Image</th>
+          <th>Description</th>
+          <th>Price</th>
+          <th>Stock</th>
+          <th>Category</th>
+          <th>Variety</th>
+          <th>Benefits</th>
+          <th>Ingredients</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="productsTableBody"></tbody>
+    </table>
+  </div>
+  <!-- Pagination -->
+  <nav>
+    <ul id="pagination" class="pagination justify-content-center"></ul>
+  </nav>
+</div>
+
+ <!-- modal to add products starts here -->
+                <div class="modal modal-xl " id="exampleModalToggle" aria-hidden="" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="row mt-5 p-3">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <h3>Products</h3>
+                                    
+                                </div>
+                                <div class="col-md-8 mt-3">
+                                    <h4>Information</h4>
+                                    <form action="">
+                                        <div class="mb-3">
+                                            <label for="productName" class="form-label">Product Name</label>
+                                            <input type="text" class="form-control" id="prodName" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="buyingPrice" class="form-label">product Description</label>
+                                            <div class="form-floating">
+                                                <textarea class="form-control" placeholder="Leave a comment here" id="prodDecsription" style="height: 100px"></textarea>
+                                                <label for="floatingTextarea2">Product description</label>
+                                            </div>
+                                        </div>
+                                        <hr class="mt-4" >
+                                        <div class="mb-3">
+                                            <label for="productImage" class="form-label fw-bold">Images</label>
+                                            <div class="upload-box" onclick="document.getElementById('productImage').click()">
+                                            <input type="text" id="productImage" accept="image/*">
+                                            <div>
+                                                <button class="btn btn-outline-success mb-2">Add File</button>
+                                                <p class="mb-0">Or drag and drop files</p>
+                                            </div>
+                                            </div>
+                                        
+                                        </div>
+
+                                        
+                                        <hr class="mt-4" >
+
+                                        <div class="row mt-4">
+                                            <label for="threshold" class="form-label"> price</label>
+
+                                            <div class="col-md-6 mt-3">
+                                                <div class="mb-3">
+                                                    <label for="threshold" class="form-label"> Product price</label>
+                                                    <input type="number" class="form-control" id="prodPrice" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="threshold" class="form-label"> Number in Stock</label>
+                                                    <input type="number" class="form-control" id="prodStock" required>
+                                                </div>
+
+                                                
+                                            </div>
+                                            <div class="col-md-6 mt-5">
+                                                <div class="">
+                                                    <select id="categorySelect" class="form-select ">
+                                                    <option value="" >-- Select a Category --</option>
+                                                    </select>
+                                                <!-- <label for="threshold" class="form-label">Discount price</label>
+                                                <input type="number" class="form-control" id="threshold" required> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr class="mt-4">
+                                            
+                                            
+                                      
+
+                                        <div class="row mt-4">
+                                            <p>Shipping</p>
+                                            <div class="col-md-6 mt-3">
+                                                <div class="mb-3">
+                                                    
+                                                    <label for="threshold" class="form-label">ingredients</label>
+                                                    <input type="text" class="form-control" id="ingredients" required>
+                                                    <label for="threshold" class="form-label">variety</label>
+                                                    <input type="text" class="form-control" id="variety" required>
+                                                    <label for="threshold" class="form-label">benefits</label>
+                                                    <input type="text" class="form-control" id="benefits" required>
+                                                </div>
+                                               
+                                            </div>
+                                            
+                                        </div>                
+                                    </form>
+                                </div>
+
+                                
+                                <hr class="mt-4">
+                                <div class="text-end">
+                                    <button class="btn btn-outline-success">Cancel</button>
+                                    <button class="btn btn-success" onclick="addProducts(event)">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+<!-- Update Modal -->
+ <!-- Update Modal -->
+<div class="modal fade" id="updateModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <form id="updateForm">
+        <div class="modal-header">
+          <h5 class="modal-title">Update Product</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body row g-3">
+          <input type="hidden" id="updateProductId">
+          <div class="col-md-6">
+            <label>Name</label>
+            <input id="updateName" class="form-control" required>
+          </div>
+          <div class="col-md-6">
+            <label>Price</label>
+            <input type="number" id="updatePrice" class="form-control" required>
+          </div>
+          <div class="col-md-6">
+            <label>Stock</label>
+            <input type="number" id="updateStock" class="form-control" required>
+          </div>
+          <div class="col-md-6">
+            <label>Category</label>
+            <select id="updateCategory" class="form-select" required>
+              <option value="">Select category</option>
+            </select>
+          </div>
+          <div class="col-12">
+            <label>Description</label>
+            <textarea id="updateDescription" class="form-control" rows="2" required></textarea>
+          </div>
+          <div class="col-12">
+            <label>Images (comma separated)</label>
+            <input id="updateImages" class="form-control">
+          </div>
+          <div class="col-12">
+            <label>Variety (comma separated)</label>
+            <input id="updateVariety" class="form-control">
+          </div>
+          <div class="col-12">
+            <label>Benefits</label>
+            <textarea id="updateBenefits" class="form-control" rows="2"></textarea>
+          </div>
+          <div class="col-12">
+            <label>Ingredients (comma separated)</label>
+            <input id="updateIngredients" class="form-control">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success">Save changes</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title">Delete Product</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p id="deleteMessage"></p>
+        <input type="hidden" id="deleteProductId">
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="confirmDelete" class="btn btn-danger">Delete</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Distributor Modal -->
+<div class="modal fade" id="distributorModal" tabindex="-1" aria-labelledby="distributorModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h5 class="modal-title" id="distributorModalLabel">Add Distributor</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <!-- Modal Body -->
+      <div class="modal-body">
+        <form id="addDistributorForm">
+          
+          <!-- Name -->
+          <div class="mb-3">
+            <label for="distributorName" class="form-label">Full Name</label>
+            <input type="text" class="form-control" id="distributorName" required>
+          </div>
+          
+          <!-- Phone -->
+          <div class="mb-3">
+            <label for="distributorPhone" class="form-label">Phone Number</label>
+            <input type="tel" class="form-control" id="distributorPhone" required>
+          </div>
+
+          <!-- Email -->
+          <div class="mb-3">
+            <label for="distributorEmail" class="form-label">Email</label>
+            <input type="email" class="form-control" id="distributorEmail" required>
+          </div>
+          
+          <!-- Password -->
+          <div class="mb-3">
+            <label for="distributorPassword" class="form-label">Password</label>
+            <input type="password" class="form-control" id="distributorPassword" required>
+          </div>
+          
+          <!-- Role (readonly) -->
+          <div class="mb-3">
+            <label for="distributorRole" class="form-label">Role</label>
+            <input type="text" class="form-control" id="distributorRole" value="Distributor" readonly>
+          </div>
+
+          <!-- Location -->
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label for="country" class="form-label">Country</label>
+              <select class="form-select" id="country" required>
+                <option value="">Select Country</option>
+              </select>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label for="state" class="form-label">State</label>
+              <select class="form-select" id="state" disabled required>
+                <option value="">Select State</option>
+              </select>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label for="city" class="form-label">City</label>
+              <select class="form-select" id="city" disabled required>
+                <option value="">Select City</option>
+              </select>
+            </div>
+          </div>
+
+        </form>
+      </div>
+      
+      <!-- Modal Footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="submit" form="addDistributorForm" class="btn btn-success">Add Distributor</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<!-- <script>
+document.addEventListener("DOMContentLoaded", () => {
+  const spinner = document.getElementById("loadingSpinner");
+  const tableBody = document.getElementById("productsTableBody");
+  const searchInput = document.getElementById("searchInput");
+  const pageSizeSelect = document.getElementById("pageSize");
+  const pagination = document.getElementById("pagination");
+
+  const updateModal = new bootstrap.Modal(document.getElementById("updateModal"));
+  const deleteModal = new bootstrap.Modal(document.getElementById("deleteModal"));
+
+  let products = [];
+  let filteredProducts = [];
+  let currentPage = 1;
+  let pageSize = parseInt(pageSizeSelect.value);
+
+  async function fetchProducts() {
+    spinner.style.display = "block";
+    const token = localStorage.getItem("key");
+    if (!token) { Swal.fire({icon:"error",text:"Unauthorized"}); spinner.style.display="none"; return; }
+
+    try {
+      const res = await fetch("http://localhost:3001/amazon/document/api/products", { headers:{Authorization:`Bearer ${token}`} });
+      const data = await res.json();
+      if (!Array.isArray(data)) throw new Error("Invalid response");
+      products = data;
+      filteredProducts = [...products];
+      renderTable();
+    } catch(e){ console.error(e); Swal.fire({icon:"error",text:"Failed to load products"}); }
+    finally{ spinner.style.display="none"; }
+  }
+
+  function renderTable(){
+    tableBody.innerHTML = "";
+    const query = searchInput.value.toLowerCase();
+    filteredProducts = products.filter(p => p.name.toLowerCase().includes(query) || p.description.toLowerCase().includes(query));
+    const totalPages = Math.ceil(filteredProducts.length/pageSize);
+    if(currentPage>totalPages) currentPage = totalPages||1;
+    const start = (currentPage-1)*pageSize;
+    const paginated = filteredProducts.slice(start,start+pageSize);
+
+    paginated.forEach(p=>{
+      const firstImage = p.image?.[0] || "https://via.placeholder.com/50";
+      const varietyBadges = (p.variety||[]).map(v=>`<span class="badge bg-info me-1">${v}</span>`).join("");
+      const ingridientBadges = (p.ingridients||[]).map(i=>`<span class="badge bg-secondary me-1">${i}</span>`).join("");
+      const row = `
+        <tr>
+          <td>${p.name}</td>
+          <td><img src="${firstImage}" class="img-thumbnail" style="width:50px;height:50px;object-fit:cover;"></td>
+          <td>${p.description}</td>
+          <td>₦${Number(p.price).toLocaleString("en-NG")}</td>
+          <td>${p.numberInStock}</td>
+          <td>${p.category?.name||"N/A"}</td>
+          <td>${varietyBadges}</td>
+          <td>${p.benefits||""}</td>
+          <td>${ingridientBadges}</td>
+          <td>
+            <button class="btn btn-sm btn-warning me-1 update-btn" data-id="${p._id}">Update</button>
+            <button class="btn btn-sm btn-danger delete-btn" data-id="${p._id}">Delete</button>
+          </td>
+        </tr>`;
+      tableBody.insertAdjacentHTML("beforeend", row);
+    });
+    renderPagination(Math.ceil(filteredProducts.length/pageSize));
+  }
+
+  function renderPagination(totalPages){
+    pagination.innerHTML = "";
+    if(totalPages<=1) return;
+    const prevDisabled = currentPage===1?"disabled":"";
+    const nextDisabled = currentPage===totalPages?"disabled":"";
+    pagination.insertAdjacentHTML("beforeend",`<li class="page-item ${prevDisabled}"><a class="page-link" href="#" onclick="changePage(${currentPage-1})">Previous</a></li>`);
+    for(let i=1;i<=totalPages;i++){const active=i===currentPage?"active":"";pagination.insertAdjacentHTML("beforeend",`<li class="page-item ${active}"><a class="page-link" href="#" onclick="changePage(${i})">${i}</a></li>`);}
+    pagination.insertAdjacentHTML("beforeend",`<li class="page-item ${nextDisabled}"><a class="page-link" href="#" onclick="changePage(${currentPage+1})">Next</a></li>`);
+  }
+
+  window.changePage=(page)=>{if(page>=1){currentPage=page;renderTable();}};
+  searchInput.addEventListener("input",()=>{currentPage=1;renderTable();});
+  pageSizeSelect.addEventListener("change",()=>{pageSize=parseInt(pageSizeSelect.value);currentPage=1;renderTable();});
+
+  // Update modal
+  document.addEventListener("click",(e)=>{
+    if(e.target.classList.contains("update-btn")){
+      const id = e.target.dataset.id;
+      const p = products.find(x=>x._id===id);
+      if(!p) return;
+      document.getElementById("updateProductId").value = p._id;
+      document.getElementById("updateName").value = p.name;
+      document.getElementById("updatePrice").value = p.price;
+      document.getElementById("updateStock").value = p.numberInStock;
+      document.getElementById("updateCategory").value = p.category?.name|| "";
+      document.getElementById("updateDescription").value = p.description;
+      document.getElementById("updateImages").value = p.image?.join(", ")||"";
+      document.getElementById("updateVariety").value = p.variety?.join(", ")||"";
+      document.getElementById("updateBenefits").value = p.benefits||"";
+      document.getElementById("updateIngredients").value = p.ingridients?.join(",")||"";
+      updateModal.show();
+    }
+    if(e.target.classList.contains("delete-btn")){
+      const id = e.target.dataset.id;
+      const p = products.find(x=>x._id===id);
+      if(!p) return;
+      document.getElementById("deleteProductId").value=p._id;
+      document.getElementById("deleteMessage").innerText=`Are you sure you want to delete "${p.name}"?`;
+      deleteModal.show();
+    }
+  });
+
+  // Submit update
+  document.getElementById("updateForm").addEventListener("submit",async e=>{
+    e.preventDefault();
+    const id=document.getElementById("updateProductId").value;
+    const token=localStorage.getItem("key");
+    try{
+      const res=await fetch(`http://localhost:3001/amazon/document/api/products/${id}`,{
+        method:"PUT",
+        headers:{"Content-Type":"application/json","Authorization":`Bearer ${token}`},
+        body:JSON.stringify({
+          name: document.getElementById("updateName").value,
+          price: parseFloat(document.getElementById("updatePrice").value),
+          numberInStock: parseInt(document.getElementById("updateStock").value,10),
+          description: document.getElementById("updateDescription").value,
+          category: document.getElementById("updateCategory").value,
+          image: document.getElementById("updateImages").value.split(",").map(i=>i.trim()).filter(i=>i),
+          variety: document.getElementById("updateVariety").value.split(",").map(i=>i.trim()).filter(i=>i),
+          benefits: document.getElementById("updateBenefits").value,
+          ingridients: document.getElementById("updateIngredients").value.split(",").map(i=>i.trim()).filter(i=>i)
+        })
+      });
+      const result=await res.json();
+      if(result._id){Swal.fire({icon:"success",text:"Product updated!"});updateModal.hide();fetchProducts();}
+      else Swal.fire({icon:"error",text:result.message||"Failed to update"});
+    }catch(err){console.error(err);Swal.fire({icon:"error",text:"Server error"});}
+  });
+
+  
+  // Confirm delete
+  document.getElementById("confirmDelete").addEventListener("click",async ()=>{
+    const id=document.getElementById("deleteProductId").value;
+    const token=localStorage.getItem("key");
+    try{
+      const res=await fetch(`http://localhost:3001/amazon/document/api/products/${id}`,{method:"DELETE",headers:{Authorization:`Bearer ${token}`}});
+      const result=await res.json();
+      if(result.success){Swal.fire({icon:"success",text:"Deleted!"});deleteModal.hide();products=products.filter(p=>p._id!==id);renderTable();}
+      else Swal.fire({icon:"error",text:result.message||"Failed to delete"});
+    }catch(err){console.error(err);Swal.fire({icon:"error",text:"Server error"});}
+  });
+
+  fetchProducts();
+});
+</script> -->
+
+<!-- <script>
+document.addEventListener("DOMContentLoaded", () => {
+  const spinner = document.getElementById("loadingSpinner");
+  const tableBody = document.getElementById("productsTableBody");
+  const searchInput = document.getElementById("searchInput");
+  const pageSizeSelect = document.getElementById("pageSize");
+  const pagination = document.getElementById("pagination");
+  const updateModal = new bootstrap.Modal(document.getElementById("updateModal"));
+  const deleteModal = new bootstrap.Modal(document.getElementById("deleteModal"));
+  let products = [];
+  let filteredProducts = [];
+  let currentPage = 1;
+  let pageSize = parseInt(pageSizeSelect.value);
+  // ------------------- Fetch Products -------------------
+  async function fetchProducts() {
+    spinner.style.display = "block";
+    const token = localStorage.getItem("key");
+    if (!token) {
+      Swal.fire({ icon: "error", text: "Unauthorized" });
+      spinner.style.display = "none";
+      return;
+    }
+    try {
+      const res = await fetch("http://localhost:3001/amazon/document/api/products", { headers: { Authorization: `Bearer ${token}` } });
+      const data = await res.json();
+      if (!Array.isArray(data)) throw new Error("Invalid response");
+      products = data;
+      filteredProducts = [...products];
+      renderTable();
+    } catch (e) {
+      console.error(e);
+      Swal.fire({ icon: "error", text: "Failed to load products" });
+    } finally {
+      spinner.style.display = "none";
+    }
+  }
+  // ------------------- Render Table -------------------
+  function renderTable() {
+    tableBody.innerHTML = "";
+    const query = searchInput.value.toLowerCase();
+    filteredProducts = products.filter(p => p.name.toLowerCase().includes(query) || p.description.toLowerCase().includes(query));
+    const totalPages = Math.ceil(filteredProducts.length / pageSize);
+    if (currentPage > totalPages) currentPage = totalPages || 1;
+    const start = (currentPage - 1) * pageSize;
+    const paginated = filteredProducts.slice(start, start + pageSize);
+    paginated.forEach(p => {
+      const firstImage = p.image?.[0] || "https://via.placeholder.com/50";
+      const varietyBadges = (p.variety || []).map(v => `<span class="badge bg-info me-1">${v}</span>`).join("");
+      const ingredientBadges = (p.ingridients || []).map(i => `<span class="badge bg-secondary me-1">${i}</span>`).join("");
+      const row = `
+        <tr>
+          <td>${p.name}</td>
+          <td><img src="${firstImage}" class="img-thumbnail" style="width:50px;height:50px;object-fit:cover;"></td>
+          <td>${p.description}</td>
+          <td>₦${Number(p.price).toLocaleString("en-NG")}</td>
+          <td>${p.numberInStock}</td>
+          <td>${p.category?.name || "N/A"}</td>
+          <td>${varietyBadges}</td>
+          <td>${p.benefits || ""}</td>
+          <td>${ingredientBadges}</td>
+          <td>
+            <button class="btn btn-sm btn-warning me-1 update-btn" data-id="${p._id}">Update</button>
+            <button class="btn btn-sm btn-danger delete-btn" data-id="${p._id}">Delete</button>
+          </td>
+        </tr>`;
+      tableBody.insertAdjacentHTML("beforeend", row);
+    });
+    renderPagination(Math.ceil(filteredProducts.length / pageSize));
+  }
+  // ------------------- Pagination -------------------
+  function renderPagination(totalPages) {
+    pagination.innerHTML = "";
+    if (totalPages <= 1) return;
+    const prevDisabled = currentPage === 1 ? "disabled" : "";
+    const nextDisabled = currentPage === totalPages ? "disabled" : "";
+    pagination.insertAdjacentHTML("beforeend", `<li class="page-item ${prevDisabled}"><a class="page-link" href="#" onclick="changePage(${currentPage-1})">Previous</a></li>`);
+    for (let i = 1; i <= totalPages; i++) {
+      const active = i === currentPage ? "active" : "";
+      pagination.insertAdjacentHTML("beforeend", `<li class="page-item ${active}"><a class="page-link" href="#" onclick="changePage(${i})">${i}</a></li>`);
+    }
+    pagination.insertAdjacentHTML("beforeend", `<li class="page-item ${nextDisabled}"><a class="page-link" href="#" onclick="changePage(${currentPage+1})">Next</a></li>`);
+  }
+  window.changePage = (page) => { if (page >= 1) { currentPage = page; renderTable(); } };
+  searchInput.addEventListener("input", () => { currentPage = 1; renderTable(); });
+  pageSizeSelect.addEventListener("change", () => { pageSize = parseInt(pageSizeSelect.value); currentPage = 1; renderTable(); });
+  // ------------------- Load Categories -------------------
+  async function loadCategories() {
+    const categorySelect = document.getElementById("updateCategory");
+    categorySelect.innerHTML = `<option value="">Select category</option>`;
+    try {
+      const token = localStorage.getItem("key");
+      const res = await fetch("http://localhost:3001/amazon/document/api/categories", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const categories = await res.json();
+      categories.forEach(cat => {
+        const option = document.createElement("option");
+        option.value = cat._id;
+        option.textContent = cat.name;
+        categorySelect.appendChild(option);
+      });
+    } catch (err) {
+      console.error(err);
+      Swal.fire({ icon: "error", text: "Failed to load categories" });
+    }
+  }
+  // ------------------- Update & Delete Button Logic -------------------
+  document.addEventListener("click", async (e) => {
+    if (e.target.classList.contains("update-btn")) {
+      const id = e.target.dataset.id;
+      const p = products.find(x => x._id === id);
+      if (!p) return;
+      document.getElementById("updateProductId").value = p._id;
+      document.getElementById("updateName").value = p.name;
+      document.getElementById("updatePrice").value = p.price;
+      document.getElementById("updateStock").value = p.numberInStock;
+      document.getElementById("updateDescription").value = p.description;
+      document.getElementById("updateImages").value = p.image?.join(", ") || "";
+      document.getElementById("updateVariety").value = p.variety?.join(", ") || "";
+      document.getElementById("updateBenefits").value = p.benefits || "";
+      document.getElementById("updateIngredients").value = p.ingridients?.join(",") || "";
+      await loadCategories();
+      document.getElementById("updateCategory").value = p.category?._id || "";
+      updateModal.show();
+    }
+    if (e.target.classList.contains("delete-btn")) {
+      const id = e.target.dataset.id;
+      const p = products.find(x => x._id === id);
+      if (!p) return;
+      document.getElementById("deleteProductId").value = p._id;
+      document.getElementById("deleteMessage").innerText = `Are you sure you want to delete "${p.name}"?`;
+      deleteModal.show();
+    }
+  });
+  // ------------------- Submit Update -------------------
+  document.getElementById("updateForm").addEventListener("submit", async e => {
+    e.preventDefault();
+    const id = document.getElementById("updateProductId").value;
+    const token = localStorage.getItem("key");
+    try {
+      const res = await fetch(`http://localhost:3001/amazon/document/api/products/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({
+          name: document.getElementById("updateName").value,
+          price: parseFloat(document.getElementById("updatePrice").value),
+          numberInStock: parseInt(document.getElementById("updateStock").value, 10),
+          description: document.getElementById("updateDescription").value,
+          category: document.getElementById("updateCategory").value, // sends _id
+          image: document.getElementById("updateImages").value.split(",").map(i => i.trim()).filter(i => i),
+          variety: document.getElementById("updateVariety").value.split(",").map(i => i.trim()).filter(i => i),
+          benefits: document.getElementById("updateBenefits").value,
+          ingridients: document.getElementById("updateIngredients").value.split(",").map(i => i.trim()).filter(i => i)
+        })
+      });
+      const result = await res.json();
+      if (result._id) {
+        Swal.fire({ icon: "success", text: "Product updated!" });
+        updateModal.hide();
+        fetchProducts();
+      } else Swal.fire({ icon: "error", text: result.message || "Failed to update" });
+    } catch (err) {
+      console.error(err);
+      Swal.fire({ icon: "error", text: "Server error" });
+    }
+  });
+  // ------------------- Confirm Delete -------------------
+  document.getElementById("confirmDelete").addEventListener("click", async () => {
+    const id = document.getElementById("deleteProductId").value;
+    const token = localStorage.getItem("key");
+    try {
+      const res = await fetch(`http://localhost:3001/amazon/document/api/products/${id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const result = await res.json();
+      if (result.success) {
+        Swal.fire({ icon: "success", text: "Deleted!" });
+        deleteModal.hide();
+        products = products.filter(p => p._id !== id);
+        renderTable();
+      } else Swal.fire({ icon: "error", text: result.message || "Failed to delete" });
+    } catch (err) {
+      console.error(err);
+      Swal.fire({ icon: "error", text: "Server error" });
+    }
+  });
+  fetchProducts();
+});
+</script> -->
+
+<script>
+  
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+
+</script>
+
+
+
+
+
+<!-- <script>
+document.addEventListener("DOMContentLoaded", () => {
+  const spinner = document.getElementById("loadingSpinner");
+  const tableBody = document.getElementById("productsTableBody");
+  const searchInput = document.getElementById("searchInput");
+  const pageSizeSelect = document.getElementById("pageSize");
+  const pagination = document.getElementById("pagination");
+
+  let products = [];
+  let currentPage = 1;
+  let pageSize = parseInt(pageSizeSelect.value);
+
+  // Fetch products on load
+  fetchProducts();
+
+  function fetchProducts() {
+    spinner.style.display = "block";
+
+    const token = localStorage.getItem("key");
+    if (!token) {
+      Swal.fire({ icon: "error", text: "Unauthorized: No token found" });
+      spinner.style.display = "none";
+      return;
+    }
+
+    fetch("http://localhost:3001/amazon/document/api/products", {
+      headers: { "Authorization": `Bearer ${token}` }
+    })
+      .then(res => res.json())
+      .then(data => {
+        spinner.style.display = "none";
+        if (!Array.isArray(data)) {
+          Swal.fire({ icon: "error", text: data.message || "Failed to load products" });
+          return;
+        }
+        products = data;
+        renderTable();
+      })
+      .catch(err => {
+        spinner.style.display = "none";
+        Swal.fire({ icon: "error", text: "Server error while fetching products" });
+        console.error(err);
+      });
+  }
+
+  function renderTable() {
+    tableBody.innerHTML = "";
+
+    const filtered = products.filter(p => 
+      p.name.toLowerCase().includes(searchInput.value.toLowerCase()) ||
+      p.description.toLowerCase().includes(searchInput.value.toLowerCase())
+    );
+
+    const totalPages = Math.ceil(filtered.length / pageSize);
+    if (currentPage > totalPages) currentPage = totalPages || 1;
+
+    const start = (currentPage - 1) * pageSize;
+    const paginated = filtered.slice(start, start + pageSize);
+
+    paginated.forEach(prod => {
+      const firstImage = prod.image?.[0] || "https://via.placeholder.com/50";
+      const varietyBadges = (prod.variety || []).map(v => `<span class="badge bg-info me-1">${v}</span>`).join("");
+      const ingredientBadges = (prod.ingredients || []).map(i => `<span class="badge bg-secondary me-1">${i}</span>`).join("");
+
+      const row = `
+        <tr>
+          <td>${prod.name}</td>
+          <td><img src="${firstImage}" alt="img" class="img-thumbnail" style="width:50px;height:50px;object-fit:cover;"></td>
+          <td>$${prod.price}</td>
+          <td>${prod.numberInStock}</td>
+          <td>${prod.category?.name || "N/A"}</td>
+          <td>${prod.benefits || ""}</td>
+          <td>${ingredientBadges}</td>
+          <td>
+            <button class="btn btn-sm btn-warning me-1" onclick="updateProduct('${prod._id}')">Update</button>
+            <button class="btn btn-sm btn-danger" onclick="deleteProduct('${prod._id}')">Delete</button>
+          </td>
+        </tr>
+      `;
+      tableBody.insertAdjacentHTML("beforeend", row);
+    });
+
+    renderPagination(totalPages);
+  }
+
+  function renderPagination(totalPages) {
+    pagination.innerHTML = "";
+    if (totalPages <= 1) return;
+
+    const prevDisabled = currentPage === 1 ? "disabled" : "";
+    const nextDisabled = currentPage === totalPages ? "disabled" : "";
+
+    pagination.insertAdjacentHTML("beforeend", `
+      <li class="page-item ${prevDisabled}">
+        <a class="page-link" href="#" onclick="changePage(${currentPage - 1})">Previous</a>
+      </li>
+    `);
+
+    for (let i = 1; i <= totalPages; i++) {
+      const active = i === currentPage ? "active" : "";
+      pagination.insertAdjacentHTML("beforeend", `
+        <li class="page-item ${active}">
+          <a class="page-link" href="#" onclick="changePage(${i})">${i}</a>
+        </li>
+      `);
+    }
+
+    pagination.insertAdjacentHTML("beforeend", `
+      <li class="page-item ${nextDisabled}">
+        <a class="page-link" href="#" onclick="changePage(${currentPage + 1})">Next</a>
+      </li>
+    `);
+  }
+
+  // Handlers
+  searchInput.addEventListener("input", () => { currentPage = 1; renderTable(); });
+  pageSizeSelect.addEventListener("change", () => { pageSize = parseInt(pageSizeSelect.value); currentPage = 1; renderTable(); });
+
+  window.changePage = (page) => { if (page >= 1) { currentPage = page; renderTable(); } };
+
+  // Placeholder functions for Update/Delete
+  window.updateProduct = (id) => { Swal.fire({ icon: "info", text: "Update feature coming soon for product " + id }); }
+  window.deleteProduct = (id) => { Swal.fire({ icon: "info", text: "Delete feature coming soon for product " + id }); }
+});
+</script>
+
+
+<script>
+    const updateModal = new bootstrap.Modal(document.getElementById("updateModal"));
+  const deleteModal = new bootstrap.Modal(document.getElementById("deleteModal"));
+
+  // Handle Update button click
+  document.addEventListener("click", (e) => {
+    if (e.target.classList.contains("update-btn")) {
+      const id = e.target.dataset.id;
+      const product = products.find(p => p._id === id);
+
+      if (!product) return;
+
+      // Prefill form
+      document.getElementById("updateProductId").value = product._id;
+      document.getElementById("updateName").value = product.name;
+      document.getElementById("updatePrice").value = product.price;
+      document.getElementById("updateStock").value = product.numberInStock;
+      document.getElementById("updateCategory").value = product.category?.name || "";
+      document.getElementById("updateDescription").value = product.description;
+      document.getElementById("updateImages").value = product.image?.join(", ") || "";
+      document.getElementById("updateVariety").value = product.variety?.join(", ") || "";
+      document.getElementById("updateBenefits").value = product.benefits || "";
+      document.getElementById("updateIngredients").value = product.ingredients?.join(", ") || "";
+
+      updateModal.show();
+    }
+  });
+
+  // Submit Update form
+  document.getElementById("updateForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const id = document.getElementById("updateProductId").value;
+    const token = localStorage.getItem("key");
+
+    try {
+      const res = await fetch(`http://localhost:3001/amazon/document/api/products/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          name: document.getElementById("updateName").value,
+          price: parseFloat(document.getElementById("updatePrice").value),
+          numberInStock: parseInt(document.getElementById("updateStock").value, 10),
+          description: document.getElementById("updateDescription").value,
+          category: document.getElementById("updateCategory").value,
+          image: document.getElementById("updateImages").value.split(",").map(i => i.trim()).filter(i => i),
+          variety: document.getElementById("updateVariety").value.split(",").map(v => v.trim()).filter(v => v),
+          benefits: document.getElementById("updateBenefits").value,
+          ingredients: document.getElementById("updateIngredients").value.split(",").map(i => i.trim()).filter(i => i)
+        })
+      });
+      const result = await res.json();
+
+      if (result._id) {
+        Swal.fire({ icon: "success", text: "Product updated successfully!" });
+        updateModal.hide();
+        fetchProducts(); // refresh table
+      } else {
+        Swal.fire({ icon: "error", text: result.message || "Failed to update product" });
+      }
+    } catch (err) {
+      console.error(err);
+      Swal.fire({ icon: "error", text: "Server error during update" });
+    }
+  });
+
+  // Handle Delete button click
+  document.addEventListener("click", (e) => {
+    if (e.target.classList.contains("delete-btn")) {
+      const id = e.target.dataset.id;
+      const product = products.find(p => p._id === id);
+
+      if (!product) return;
+
+      document.getElementById("deleteProductId").value = product._id;
+      document.getElementById("deleteMessage").innerText =
+        `Are you sure you want to delete "${product.name}"?`;
+
+      deleteModal.show();
+    }
+  });
+
+  // Confirm Delete
+  document.getElementById("confirmDelete").addEventListener("click", async () => {
+    const id = document.getElementById("deleteProductId").value;
+    const token = localStorage.getItem("key");
+
+    try {
+      const res = await fetch(`http://localhost:3001/amazon/document/api/products/${id}`, {
+        method: "DELETE",
+        headers: { "Authorization": `Bearer ${token}` }
+      });
+      const result = await res.json();
+
+      if (result.success) {
+        Swal.fire({ icon: "success", text: "Product deleted successfully!" });
+        deleteModal.hide();
+        products = products.filter(p => p._id !== id);
+        filteredProducts = filteredProducts.filter(p => p._id !== id);
+        renderTable();
+      } else {
+        Swal.fire({ icon: "error", text: result.message || "Failed to delete product" });
+      }
+    } catch (err) {
+      console.error(err);
+      Swal.fire({ icon: "error", text: "Server error during deletion" });
+    }
+  });
+</script> -->
+
+
+<script>
+  
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/js/all.min.js" integrity="sha512-b+nQTCdtTBIRIbraqNEwsjB6UvL3UEMkXnhzd8awtCYh0Kcsjl9uEgwVFVbhoj3uu1DO1ZMacNvLoyJJiNfcvg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="./js/index.js"></script>
+</body>
+</html>
