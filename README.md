@@ -51,4 +51,4 @@ Its simple architecture demonstrates how robust and dynamic web apps can be buil
 
 ### 1️⃣ Clone the Repository
 ```bash
-git clone https://github.com/yourusername/ecommerce-snack-dashboard.git
+git clone https://github.com/FolaElias/Amazon-Admin.git
